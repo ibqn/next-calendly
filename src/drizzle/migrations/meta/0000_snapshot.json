@@ -1,12 +1,12 @@
 {
-  "id": "91be9871-42b4-44a5-a541-551e1bd45cbd",
+  "id": "7acdbc84-14ff-47f3-b0be-ba7a04811f9c",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
-    "public.events": {
+    "drizzle.events": {
       "name": "events",
-      "schema": "",
+      "schema": "drizzle",
       "columns": {
         "id": {
           "name": "id",
@@ -85,9 +85,9 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.schedule_availabilities": {
+    "drizzle.schedule_availabilities": {
       "name": "schedule_availabilities",
-      "schema": "",
+      "schema": "drizzle",
       "columns": {
         "id": {
           "name": "id",
@@ -117,7 +117,7 @@
         "day_of_week": {
           "name": "day_of_week",
           "type": "day_of_week",
-          "typeSchema": "public",
+          "typeSchema": "drizzle",
           "primaryKey": false,
           "notNull": true
         },
@@ -158,6 +158,7 @@
           "name": "schedule_availabilities_schedule_id_schedules_id_fk",
           "tableFrom": "schedule_availabilities",
           "tableTo": "schedules",
+          "schemaTo": "drizzle",
           "columnsFrom": [
             "schedule_id"
           ],
@@ -174,9 +175,9 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.schedules": {
+    "drizzle.schedules": {
       "name": "schedules",
-      "schema": "",
+      "schema": "drizzle",
       "columns": {
         "id": {
           "name": "id",
@@ -230,9 +231,9 @@
     }
   },
   "enums": {
-    "public.day_of_week": {
+    "drizzle.day_of_week": {
       "name": "day_of_week",
-      "schema": "public",
+      "schema": "drizzle",
       "values": [
         "monday",
         "tuesday",
@@ -244,7 +245,9 @@
       ]
     }
   },
-  "schemas": {},
+  "schemas": {
+    "drizzle": "drizzle"
+  },
   "sequences": {},
   "roles": {},
   "policies": {},

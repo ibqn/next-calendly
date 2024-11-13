@@ -1,6 +1,6 @@
 import { DAYS_OF_WEEK_IN_ORDER } from "@/data/constants"
 import { relations } from "drizzle-orm"
-import { boolean, index, integer, pgEnum, pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core"
+import { boolean, index, integer, pgSchema, text, timestamp, uuid } from "drizzle-orm/pg-core"
 
 const createdAtUpdatedAt = {
   createdAt: timestamp("created_at").notNull().defaultNow(),
@@ -10,7 +10,9 @@ const createdAtUpdatedAt = {
     .$onUpdate(() => new Date()),
 }
 
-export const EventTable = pgTable(
+export const schema = pgSchema("drizzle")
+
+export const EventTable = schema.table(
   "events",
   {
     id: uuid("id").primaryKey().defaultRandom(),
@@ -24,7 +26,7 @@ export const EventTable = pgTable(
   (table) => [index("clerkUserIdIndex").on(table.clerkUserId)]
 )
 
-export const ScheduleTable = pgTable("schedules", {
+export const ScheduleTable = schema.table("schedules", {
   id: uuid("id").primaryKey().defaultRandom(),
   timezone: text("timezone").notNull(),
   clerkUserId: text("clerk_user_id").notNull().unique(),
@@ -35,9 +37,9 @@ export const scheduleRelations = relations(ScheduleTable, ({ many }) => ({
   availabilities: many(ScheduleAvailabilityTable),
 }))
 
-export const scheduleDayOfWeekEnum = pgEnum("day_of_week", DAYS_OF_WEEK_IN_ORDER)
+export const scheduleDayOfWeekEnum = schema.enum("day_of_week", DAYS_OF_WEEK_IN_ORDER)
 
-export const ScheduleAvailabilityTable = pgTable(
+export const ScheduleAvailabilityTable = schema.table(
   "schedule_availabilities",
   {
     id: uuid("id").primaryKey().defaultRandom(),
