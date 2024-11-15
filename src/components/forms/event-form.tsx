@@ -9,29 +9,34 @@ import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import { Textarea } from "@/components/ui/textarea"
 import { Switch } from "@/components/ui/switch"
-import { createEvent } from "@/server/actions/event"
+import { createEvent, updateEvent } from "@/server/actions/event"
 import { redirect } from "next/navigation"
 import { EventResponseType } from "@/server/actions/types"
+import { Event } from "@/drizzle/schema"
 
-type Props = {}
+type Props = {
+  event?: Event
+}
 
-export const EventForm = (props: Props) => {
+export const EventForm = ({ event }: Props) => {
   const form = useForm<EventFormSchema>({
     defaultValues: {
-      name: "",
-      description: "",
-      isActive: true,
-      durationInMinutes: 30,
+      id: event?.id ?? undefined,
+      name: event?.name ?? "",
+      description: event?.description ?? "",
+      isActive: event?.isActive ?? true,
+      durationInMinutes: event?.durationInMinutes ?? 0,
     },
     resolver: zodResolver(eventFormSchema),
   })
 
   const onSubmit = form.handleSubmit(async (data) => {
     console.log("form", data)
-    const response = await createEvent(data)
+    const action = event ? updateEvent : createEvent
+    const response = await action(data)
 
     if (response?.type === EventResponseType.error) {
-      form.setError("root.createEvent", { message: response.message })
+      form.setError("root.actionEvent", { message: response.message })
     }
 
     if (response?.type === EventResponseType.success) {
@@ -42,8 +47,8 @@ export const EventForm = (props: Props) => {
   return (
     <Form {...form}>
       <form onSubmit={onSubmit} className="flex flex-col gap-6">
-        {form.formState.errors.root?.createEvent && (
-          <FormMessage>{form.formState.errors.root.createEvent.message}</FormMessage>
+        {form.formState.errors.root?.actionEvent && (
+          <FormMessage>{form.formState.errors.root.actionEvent.message}</FormMessage>
         )}
 
         <FormField
