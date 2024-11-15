@@ -8,14 +8,14 @@ import "server-only"
 import { EventResponseType } from "./types"
 import { and, eq } from "drizzle-orm"
 
-type CreateEventResponse =
+type EventResponse =
   | {
       type: typeof EventResponseType.error
       message: string
     }
   | { type: typeof EventResponseType.success }
 
-export const createEvent = async (unsafeData: EventFormSchema): Promise<CreateEventResponse> => {
+export const createEvent = async (unsafeData: EventFormSchema): Promise<EventResponse> => {
   const { userId } = await auth()
 
   if (userId === null) {
@@ -36,7 +36,7 @@ export const createEvent = async (unsafeData: EventFormSchema): Promise<CreateEv
   return { type: EventResponseType.success }
 }
 
-export const updateEvent = async (unsafeData: EventFormSchema): Promise<CreateEventResponse> => {
+export const updateEvent = async (unsafeData: EventFormSchema): Promise<EventResponse> => {
   const { userId } = await auth()
 
   if (userId === null) {
@@ -58,7 +58,7 @@ export const updateEvent = async (unsafeData: EventFormSchema): Promise<CreateEv
 
   const result = await db
     .update(EventTable)
-    .set({ ...data })
+    .set(data)
     .where(and(eq(EventTable.id, data.id), eq(EventTable.clerkUserId, userId)))
 
   if (result.count === 0) {
