@@ -26,6 +26,8 @@ export const EventTable = schema.table(
   (table) => [index("clerkUserIdIndex").on(table.clerkUserId)]
 )
 
+export type Event = typeof EventTable.$inferSelect
+
 export const ScheduleTable = schema.table("schedules", {
   id: uuid("id").primaryKey().defaultRandom(),
   timezone: text("timezone").notNull(),

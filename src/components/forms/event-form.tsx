@@ -4,11 +4,14 @@ import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { eventFormSchema, EventFormSchema } from "@/schema/event"
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
-import { Input } from "../ui/input"
-import { Button } from "../ui/button"
+import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
 import Link from "next/link"
-import { Textarea } from "../ui/textarea"
-import { Switch } from "../ui/switch"
+import { Textarea } from "@/components/ui/textarea"
+import { Switch } from "@/components/ui/switch"
+import { createEvent } from "@/server/actions/event"
+import { redirect } from "next/navigation"
+import { EventResponseType } from "@/server/actions/types"
 
 type Props = {}
 
@@ -23,13 +26,26 @@ export const EventForm = (props: Props) => {
     resolver: zodResolver(eventFormSchema),
   })
 
-  const onSubmit = form.handleSubmit((data) => {
+  const onSubmit = form.handleSubmit(async (data) => {
     console.log("form", data)
+    const response = await createEvent(data)
+
+    if (response?.type === EventResponseType.error) {
+      form.setError("root.createEvent", { message: response.message })
+    }
+
+    if (response?.type === EventResponseType.success) {
+      redirect("/events")
+    }
   })
 
   return (
     <Form {...form}>
       <form onSubmit={onSubmit} className="flex flex-col gap-6">
+        {form.formState.errors.root?.createEvent && (
+          <FormMessage>{form.formState.errors.root.createEvent.message}</FormMessage>
+        )}
+
         <FormField
           control={form.control}
           name="name"
