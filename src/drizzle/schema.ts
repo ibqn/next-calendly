@@ -35,6 +35,8 @@ export const ScheduleTable = schema.table("schedules", {
   ...createdAtUpdatedAt,
 })
 
+export type Schedule = typeof ScheduleTable.$inferSelect
+
 export const scheduleRelations = relations(ScheduleTable, ({ many }) => ({
   availabilities: many(ScheduleAvailabilityTable),
 }))
@@ -49,12 +51,14 @@ export const ScheduleAvailabilityTable = schema.table(
       .notNull()
       .references(() => ScheduleTable.id, { onDelete: "cascade" }),
     startTime: text("start_time").notNull(),
-    endTime: timestamp("end_time").notNull(),
+    endTime: text("end_time").notNull(),
     dayOfWeek: scheduleDayOfWeekEnum("day_of_week").notNull(),
     ...createdAtUpdatedAt,
   },
   (table) => [index("scheduleIdIndex").on(table.scheduleId)]
 )
+
+export type ScheduleAvailability = typeof ScheduleAvailabilityTable.$inferSelect
 
 export const ScheduleAvailabilityRelations = relations(ScheduleAvailabilityTable, ({ one }) => ({
   schedule: one(ScheduleTable, {
@@ -62,3 +66,7 @@ export const ScheduleAvailabilityRelations = relations(ScheduleAvailabilityTable
     references: [ScheduleTable.id],
   }),
 }))
+
+export type ScheduleWithAvailabilities = Schedule & {
+  availabilities: ScheduleAvailability[]
+}
