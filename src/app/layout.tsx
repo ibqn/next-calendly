@@ -3,6 +3,7 @@ import { Inter } from "next/font/google"
 import "./globals.css"
 import { cn } from "@/lib/utils"
 import { ClerkProvider } from "@clerk/nextjs"
+import { Toaster } from "@/components/ui/sonner"
 
 const sans = Inter({
   subsets: ["latin"],
@@ -23,6 +24,7 @@ export default function RootLayout({ children }: Props) {
     <ClerkProvider>
       <html lang="en">
         <body className={cn("min-h-screen antialiased", `${sans.variable}`)}>{children}</body>
+        <Toaster />
       </html>
     </ClerkProvider>
   )

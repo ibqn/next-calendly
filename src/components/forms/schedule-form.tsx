@@ -14,6 +14,7 @@ import { formatTimezoneOffset } from "@/lib/format-timezone-offset"
 import { DayOfWeek, DAYS_OF_WEEK_IN_ORDER } from "@/data/constants"
 import { PlusIcon, X } from "lucide-react"
 import { createSchedule } from "@/server/actions/schedule"
+import { toast } from "sonner"
 
 type Props = {
   schedule?: ScheduleWithAvailabilities
@@ -41,6 +42,7 @@ export const ScheduleForm = ({ schedule }: Props) => {
 
     if (response?.type === "success") {
       console.log("success")
+      toast("Schedule was saved successfully.")
     }
   })
 
