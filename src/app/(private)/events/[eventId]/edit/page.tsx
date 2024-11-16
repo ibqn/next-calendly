@@ -4,21 +4,25 @@ import { db } from "@/drizzle/db"
 import { auth } from "@clerk/nextjs/server"
 import { notFound } from "next/navigation"
 
+type Params = Promise<{
+  eventId: string
+}>
+
 type Props = {
-  params: {
-    eventId: string
-  }
+  params: Params
 }
 
 export default async function EditEventPage({ params }: Props) {
   const { userId, redirectToSignIn } = await auth()
+
+  const { eventId } = await params
 
   if (userId === null) {
     return redirectToSignIn()
   }
 
   const event = await db.query.EventTable.findFirst({
-    where: ({ id, clerkUserId }, { eq, and }) => and(eq(id, params.eventId), eq(clerkUserId, userId)),
+    where: ({ id, clerkUserId }, { eq, and }) => and(eq(id, eventId), eq(clerkUserId, userId)),
   })
 
   if (!event) {
@@ -29,7 +33,7 @@ export default async function EditEventPage({ params }: Props) {
     <Card className="mx-auto max-w-md">
       <CardHeader>
         <CardTitle>Edit Event</CardTitle>
-        <CardDescription>{params.eventId}</CardDescription>
+        <CardDescription>{eventId}</CardDescription>
       </CardHeader>
 
       <CardContent>

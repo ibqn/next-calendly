@@ -67,3 +67,26 @@ export const updateEvent = async (unsafeData: EventFormSchema): Promise<EventRes
 
   return { type: EventResponseType.success }
 }
+
+export const deleteEvent = async (eventId?: string): Promise<EventResponse> => {
+  const { userId } = await auth()
+
+  if (userId === null) {
+    return {
+      type: EventResponseType.error,
+      message: "You must be signed in to update an event",
+    }
+  }
+
+  if (!eventId) {
+    return { type: EventResponseType.error, message: "Event Id is required" }
+  }
+
+  const result = await db.delete(EventTable).where(and(eq(EventTable.id, eventId), eq(EventTable.clerkUserId, userId)))
+
+  if (result.count === 0) {
+    return { type: EventResponseType.error, message: "Event not found" }
+  }
+
+  return { type: EventResponseType.success }
+}
