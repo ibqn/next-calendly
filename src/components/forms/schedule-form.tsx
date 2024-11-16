@@ -6,7 +6,7 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { ScheduleWithAvailabilities } from "@/drizzle/schema"
-import { Fragment, useTransition } from "react"
+import { Fragment } from "react"
 import { scheduleFormSchema, ScheduleFormSchema } from "@/schema/schedule"
 import { timeToInt } from "@/lib/time-to-int"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
@@ -21,7 +21,6 @@ type Props = {
 }
 
 export const ScheduleForm = ({ schedule }: Props) => {
-  const [isDeletePending, startDeleteTransaction] = useTransition()
   const form = useForm<ScheduleFormSchema>({
     defaultValues: {
       timezone: schedule?.timezone ?? Intl.DateTimeFormat().resolvedOptions().timeZone,
@@ -63,6 +62,10 @@ export const ScheduleForm = ({ schedule }: Props) => {
   const handleAddAvailability = (dayOfWeek: DayOfWeek) => () => {
     console.log("dayOfWeek", dayOfWeek)
     addAvailability({ startTime: "09:00", endTime: "17:00", dayOfWeek })
+  }
+
+  const handleRemoveAvailability = (fieldIndex: number) => () => {
+    removeAvailability(fieldIndex)
   }
 
   return (
@@ -156,10 +159,8 @@ export const ScheduleForm = ({ schedule }: Props) => {
                             className="size-6 p-1"
                             variant="destructiveGhost"
                             type="button"
-                            disabled={form.formState.isSubmitting || isDeletePending}
-                            onClick={() => {
-                              startDeleteTransaction(() => removeAvailability(field.index))
-                            }}
+                            disabled={form.formState.isSubmitting}
+                            onClick={handleRemoveAvailability(field.index)}
                           >
                             <X className="size-full" />
                           </Button>
