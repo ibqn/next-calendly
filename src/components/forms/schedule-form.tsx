@@ -12,7 +12,7 @@ import { timeToInt } from "@/lib/time-to-int"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { formatTimezoneOffset } from "@/lib/format-timezone-offset"
 import { DayOfWeek, DAYS_OF_WEEK_IN_ORDER } from "@/data/constants"
-import { PlusIcon, X } from "lucide-react"
+import { PlusIcon, XIcon } from "lucide-react"
 import { createSchedule } from "@/server/actions/schedule"
 import { toast } from "sonner"
 
@@ -162,7 +162,7 @@ export const ScheduleForm = ({ schedule }: Props) => {
                             disabled={form.formState.isSubmitting}
                             onClick={handleRemoveAvailability(field.index)}
                           >
-                            <X className="size-full" />
+                            <XIcon className="size-full" />
                           </Button>
                         </div>
 
