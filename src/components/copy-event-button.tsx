@@ -30,7 +30,7 @@ export const CopyEventButton = ({ eventId, clerkUserId, ...props }: Props) => {
 
   return (
     <Button {...props} onClick={handleCopy}>
-      <CopyIcon className="mr-2 size-4" /> {label}
+      <CopyIcon className="size-4" /> {label}
     </Button>
   )
 }
