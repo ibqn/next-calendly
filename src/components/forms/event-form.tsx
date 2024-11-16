@@ -13,18 +13,8 @@ import { createEvent, deleteEvent, updateEvent } from "@/server/actions/event"
 import { redirect } from "next/navigation"
 import { EventResponseType } from "@/server/actions/types"
 import { Event } from "@/drizzle/schema"
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "../ui/alert-dialog"
 import { useTransition } from "react"
+import { DeleteEventAlertDialog } from "@/components/delete-event-alert-dialog"
 
 type Props = {
   event?: Event
@@ -141,42 +131,15 @@ export const EventForm = ({ event }: Props) => {
           )}
         />
 
-        <div className="flex justify-end gap-2">
+        <div className="flex justify-between gap-2">
           {event && (
-            <AlertDialog>
-              <AlertDialogTrigger asChild>
-                <Button
-                  variant="destructiveGhost"
-                  type="button"
-                  disabled={isDeletePending || form.formState.isSubmitting}
-                >
-                  Delete
-                </Button>
-              </AlertDialogTrigger>
-
-              <AlertDialogContent>
-                <AlertDialogHeader>
-                  <AlertDialogTitle>Do you want to delete this event?</AlertDialogTitle>
-                  <AlertDialogDescription>
-                    This action is irreversible. All bookings associated with this event will be deleted.
-                  </AlertDialogDescription>
-                </AlertDialogHeader>
-
-                <AlertDialogFooter>
-                  <AlertDialogCancel>Cancel</AlertDialogCancel>
-                  <AlertDialogAction
-                    variant="destructive"
-                    disabled={isDeletePending || form.formState.isSubmitting}
-                    type="button"
-                    onClick={onDelete}
-                  >
-                    Delete
-                  </AlertDialogAction>
-                </AlertDialogFooter>
-              </AlertDialogContent>
-            </AlertDialog>
+            <DeleteEventAlertDialog
+              onDeleteAction={onDelete}
+              disabledAction={isDeletePending || form.formState.isSubmitting}
+              disabledTrigger={isDeletePending || form.formState.isSubmitting}
+            />
           )}
-          <Button asChild variant="outline" type="button">
+          <Button asChild variant="outline" type="button" className="ml-auto">
             <Link href="/events">Cancel</Link>
           </Button>
 
