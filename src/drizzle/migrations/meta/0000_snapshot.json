@@ -1,5 +1,5 @@
 {
-  "id": "7acdbc84-14ff-47f3-b0be-ba7a04811f9c",
+  "id": "cd432ca7-cf6e-4b8b-8649-61784cd1fa07",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -110,7 +110,7 @@
         },
         "end_time": {
           "name": "end_time",
-          "type": "timestamp",
+          "type": "text",
           "primaryKey": false,
           "notNull": true
         },

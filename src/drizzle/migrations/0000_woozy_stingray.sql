@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS "drizzle"."schedule_availabilities" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"schedule_id" uuid NOT NULL,
 	"start_time" text NOT NULL,
-	"end_time" timestamp NOT NULL,
+	"end_time" text NOT NULL,
 	"day_of_week" "drizzle"."day_of_week" NOT NULL,
 	"created_at" timestamp DEFAULT now() NOT NULL,
 	"updated_at" timestamp DEFAULT now() NOT NULL
