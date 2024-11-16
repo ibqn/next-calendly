@@ -21,11 +21,11 @@ type Props = Readonly<{
 
 export default function RootLayout({ children }: Props) {
   return (
-    <ClerkProvider>
-      <html lang="en">
-        <body className={cn("min-h-screen antialiased", `${sans.variable}`)}>{children}</body>
+    <html lang="en" suppressHydrationWarning>
+      <body className={cn("min-h-screen antialiased", `${sans.variable}`)}>
+        <ClerkProvider>{children}</ClerkProvider>
         <Toaster />
-      </html>
-    </ClerkProvider>
+      </body>
+    </html>
   )
 }
