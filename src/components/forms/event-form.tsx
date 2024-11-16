@@ -11,7 +11,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Switch } from "@/components/ui/switch"
 import { createEvent, deleteEvent, updateEvent } from "@/server/actions/event"
 import { redirect } from "next/navigation"
-import { EventResponseType } from "@/server/actions/types"
+import { ActionResponseType } from "@/server/actions/types"
 import { Event } from "@/drizzle/schema"
 import { useTransition } from "react"
 import { DeleteEventAlertDialog } from "@/components/delete-event-alert-dialog"
@@ -38,11 +38,11 @@ export const EventForm = ({ event }: Props) => {
     const action = event ? updateEvent : createEvent
     const response = await action(data)
 
-    if (response?.type === EventResponseType.error) {
+    if (response?.type === ActionResponseType.error) {
       form.setError("root.actionEvent", { message: response.message })
     }
 
-    if (response?.type === EventResponseType.success) {
+    if (response?.type === ActionResponseType.success) {
       redirect("/events")
     }
   })
@@ -52,11 +52,11 @@ export const EventForm = ({ event }: Props) => {
       const data = await deleteEvent(event?.id)
       console.log("delete")
 
-      if (data?.type === EventResponseType.error) {
+      if (data?.type === ActionResponseType.error) {
         form.setError("root.actionEvent", { message: data.message })
       }
 
-      if (data?.type === EventResponseType.success) {
+      if (data?.type === ActionResponseType.success) {
         redirect("/events")
       }
     })
