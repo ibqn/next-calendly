@@ -3,29 +3,25 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { formatDuration } from "@/lib/format-duration"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
-import { CopyEventButton } from "@/components/copy-event-button"
-import { cn } from "@/lib/utils"
 
 type Props = {
   event: Event
+  clerkUserId: string
 }
 
-export const EventCard = ({ event }: Props) => {
+export const PublicEventCard = ({ event, clerkUserId }: Props) => {
   return (
-    <Card className={cn("flex flex-col", event.isActive || "border-secondary/50")}>
-      <CardHeader className={cn(event.isActive || "opacity-50")}>
+    <Card className="flex flex-col">
+      <CardHeader>
         <CardTitle>{event.name}</CardTitle>
         <CardDescription>{formatDuration(event.durationInMinutes)}</CardDescription>
       </CardHeader>
 
-      {event.description && (
-        <CardContent className={cn(event.isActive || "opacity-50")}>{event.description}</CardContent>
-      )}
+      {event.description && <CardContent>{event.description}</CardContent>}
 
       <CardFooter className="mt-auto flex justify-end gap-2">
-        {event.isActive && <CopyEventButton variant="ghost" eventId={event.id} clerkUserId={event.clerkUserId} />}
         <Button asChild variant="outline">
-          <Link href={`/events/${event.id}/edit`}> Edit</Link>
+          <Link href={`/book/${clerkUserId}/${event.id}`}> Book</Link>
         </Button>
       </CardFooter>
     </Card>
