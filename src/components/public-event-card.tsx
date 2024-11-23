@@ -11,7 +11,7 @@ type Props = {
 
 export const PublicEventCard = ({ event, clerkUserId }: Props) => {
   return (
-    <Card className="flex flex-col">
+    <Card className="flex w-80 flex-col">
       <CardHeader>
         <CardTitle>{event.name}</CardTitle>
         <CardDescription>{formatDuration(event.durationInMinutes)}</CardDescription>

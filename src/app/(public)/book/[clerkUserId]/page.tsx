@@ -36,7 +36,7 @@ export default async function BookingPage({ params }: Props) {
       </div>
 
       {events.length > 0 ? (
-        <div className="grid grid-cols-events gap-4">
+        <div className="inline-flex flex-1 flex-wrap gap-4">
           {events.map((event) => (
             <PublicEventCard key={event.id} clerkUserId={userId} event={event} />
           ))}
