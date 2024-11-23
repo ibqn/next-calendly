@@ -2,7 +2,7 @@ name: next-calendly
 
 services:
   postgres:
-    image: postgres:16-alpine
+    image: postgres:17-alpine
     restart: unless-stopped
     ports:
       - "5432:5432"
