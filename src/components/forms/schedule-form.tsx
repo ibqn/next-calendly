@@ -97,7 +97,9 @@ export const ScheduleForm = ({ schedule }: Props) => {
                 </SelectContent>
               </Select>
 
-              <FormDescription>The name users will see when booking</FormDescription>
+              <FormDescription>
+                The timezone that the schedule will be in. This will be used to display the availability to users.
+              </FormDescription>
               <FormMessage />
             </FormItem>
           )}
