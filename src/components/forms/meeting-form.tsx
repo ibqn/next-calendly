@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import { meetingFormSchema, MeetingFormSchema } from "@/schema/meeting"
-import { format, isSameDay } from "date-fns"
+import { format, getUnixTime, isSameDay } from "date-fns"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { formatTimezoneOffset } from "@/lib/format-timezone-offset"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
@@ -52,7 +52,7 @@ export const MeetingForm = ({ eventId, userId, validTimes }: Props) => {
     }
 
     if (response?.type === ActionResponseType.success) {
-      redirect(`/book/${userId}/${eventId}/success?startTime=${data.startTime.toISOString()}`)
+      redirect(`/book/${userId}/${eventId}/success?startTime=${getUnixTime(data.startTime)}`)
     }
   })
 

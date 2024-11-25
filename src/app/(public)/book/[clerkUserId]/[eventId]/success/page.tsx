@@ -1,7 +1,8 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { db } from "@/drizzle/db"
+import { searchParamsSchema } from "@/schema/timestamp"
 import { clerkClient } from "@clerk/nextjs/server"
-import { format, parseISO } from "date-fns"
+import { format, fromUnixTime } from "date-fns"
 import { notFound } from "next/navigation"
 
 type Props = {
@@ -24,10 +25,16 @@ export default async function SuccessBookingPage({ params, searchParams }: Props
   })
 
   if (!event) {
-    return notFound()
+    notFound()
   }
 
-  const startTimeDate = parseISO(startTime)
+  const { success, data } = searchParamsSchema.safeParse({ startTime })
+
+  if (!success) {
+    notFound()
+  }
+
+  const startTimeDate = fromUnixTime(data.startTime)
 
   const clerk = await clerkClient()
   const calenderUser = await clerk.users.getUser(userId)
@@ -38,7 +45,7 @@ export default async function SuccessBookingPage({ params, searchParams }: Props
         <CardTitle>
           Successfully booked {event.name} with {calenderUser.fullName}
         </CardTitle>
-        <CardDescription>{format(startTimeDate, "MMMM do, yyyy 'at' HH:mm")}</CardDescription>
+        <CardDescription>{startTimeDate ? format(startTimeDate, "MMMM do, yyyy 'at' HH:mm") : null}</CardDescription>
       </CardHeader>
 
       <CardContent>You should receive an email confirmation shortly. You can close this page now.</CardContent>
