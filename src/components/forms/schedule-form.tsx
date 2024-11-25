@@ -140,7 +140,7 @@ export const ScheduleForm = ({ schedule }: Props) => {
                               </FormItem>
                             )}
                           />
-
+                          <span>-</span>
                           <FormField
                             control={form.control}
                             name={`availabilities.${field.index}.endTime`}
@@ -156,7 +156,6 @@ export const ScheduleForm = ({ schedule }: Props) => {
                               </FormItem>
                             )}
                           />
-
                           <Button
                             className="size-6 p-1"
                             variant="destructiveGhost"

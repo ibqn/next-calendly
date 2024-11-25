@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import { meetingFormSchema, MeetingFormSchema } from "@/schema/meeting"
-import { format, isSameDay, startOfDay } from "date-fns"
+import { format, isSameDay } from "date-fns"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { formatTimezoneOffset } from "@/lib/format-timezone-offset"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
@@ -16,6 +16,9 @@ import { CalendarIcon } from "lucide-react"
 import { Calendar } from "@/components/ui/calendar"
 import { toZonedTime } from "date-fns-tz"
 import { Textarea } from "@/components/ui/textarea"
+import { createMeeting } from "@/server/actions/meeting"
+import { ActionResponseType } from "@/server/actions/types"
+import { redirect } from "next/navigation"
 
 type Props = {
   eventId: string
@@ -42,15 +45,15 @@ export const MeetingForm = ({ eventId, userId, validTimes }: Props) => {
   const onSubmit = form.handleSubmit(async (data) => {
     console.log("form", data)
 
-    // const response = await createMeeting(data)
+    const response = await createMeeting({ ...data, eventId, clerkUserId: userId })
 
-    // if (response?.type === ActionResponseType.error) {
-    //   form.setError("root.actionEvent", { message: response.message })
-    // }
+    if (response?.type === ActionResponseType.error) {
+      form.setError("root.actionEvent", { message: response.message })
+    }
 
-    // if (response?.type === ActionResponseType.success) {
-    //   redirect("/events")
-    // }
+    if (response?.type === ActionResponseType.success) {
+      redirect(`/book/${userId}/${eventId}/success?startTime=${data.startTime.toISOString()}`)
+    }
   })
 
   return (
